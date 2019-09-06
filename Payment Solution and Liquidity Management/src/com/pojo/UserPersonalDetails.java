@@ -3,7 +3,7 @@ package com.pojo;
 public class UserPersonalDetails {
 
 	private String name;
-	//hello
+	//hello1
 	private String contact;
 	private String address;
 	private String emailID;
