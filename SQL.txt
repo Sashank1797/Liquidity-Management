@@ -10,14 +10,12 @@ CREATE TABLE users(
     PRIMARY KEY(id)
 );
 
-
 CREATE TABLE login(
     user_id INT NOT NULL,
     username VARCHAR(64) NOT NULL,
     password VARCHAR(64) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
-
 
 CREATE TABLE accounts(
     id INT NOT NULL,
@@ -28,7 +26,6 @@ CREATE TABLE accounts(
     PRIMARY KEY(id),   
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
-
 
 CREATE TABLE transactions(
     id INT NOT NULL,

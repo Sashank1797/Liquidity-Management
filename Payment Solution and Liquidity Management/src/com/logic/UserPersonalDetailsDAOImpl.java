@@ -1,9 +1,28 @@
 package com.logic;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import com.database.DatabaseConnection;
+
 public class UserPersonalDetailsDAOImpl {
 
-	public boolean addUser(int userID, String name,String contact,String address,String emailID) {
+	public boolean addUser(String name,String contact, String emailID) {
 		boolean userAdded=false;
+		String ADD_USER="insert into users values(?,?,?)";
+		PreparedStatement ps;
+		try {
+		ps = openConnection().prepareStatement(ADD_USER);
+		ps.setString(1, name);
+		ps.setString(2, contact);
+		ps.setString(3, emailId);
+		int rows=ps.executeUpdate();
+		if(rows>0) {
+		isUpdated=true;
+		}
+		} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
 		return userAdded;
 	}
 	public boolean deleteUser(int userID) {
