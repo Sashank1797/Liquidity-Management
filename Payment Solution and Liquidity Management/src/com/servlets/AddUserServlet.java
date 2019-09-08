@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dao.UserPersonalDetails;
+import com.pojo.UserPersonalDetails;
 import com.dao.UserPersonalDetailsDAO;
-import com.dao.UserPersonalDetailsDAOImpl;
-import com.dao.UserLogin;
+import com.logic.UserPersonalDetailsDAOImpl;
+import com.pojo.UserLogin;
 import com.dao.UserLoginDAO;
-import com.dao.UserLoginDAOImpl;
+import com.logic.UserLoginDAOImpl;
 
 /**
  * Servlet implementation class AddUserServlet
