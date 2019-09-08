@@ -1,7 +1,6 @@
 package com.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.database.DatabaseConnection;
-import com.pojo.UserLogin;
 import com.dao.UserLoginDAO;
 import com.logic.UserLoginDAOImpl;
 
@@ -33,7 +30,7 @@ public class AuthenticateUserServlet extends HttpServlet {
 		
 		UserLoginDAO dao = new UserLoginDAOImpl();
 		int userId = dao.authenticateUser(username, password);	//Use for all other APIs
-		if(userId) {
+		if(userId>0) {
 			HttpSession httpSession = request.getSession();
 //			httpSession.setAttribute("username", name);
 			//ALL APIs here fetch
@@ -42,9 +39,9 @@ public class AuthenticateUserServlet extends HttpServlet {
 		}
 		else {
 			String message = "Error";
-			req.setAttribute("message", message);			
-			RequestDispatcher dispatcher = req.getRequestDispatcher("");	//Front end defined
-			dispatcher.forward(req, resp);
+			request.setAttribute("message", message);			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("");	//Front end defined
+			dispatcher.forward(request, response);
 		}
 //		doGet(request, response);
 	}

@@ -1,9 +1,10 @@
 package com.logic;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import com.dao.UserLoginDAO;
 import com.database.DatabaseConnection;
 
 public class UserLoginDAOImpl implements UserLoginDAO {
@@ -27,16 +28,18 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		}
 		return login;
 	}
-	public int authenticateUser(String userName,String password) {
+	public int authenticateUser(String username,String password) {
 		DatabaseConnection Connection = new DatabaseConnection();
 		int userId=0;
 		String SQL_LOGIN = "select * from login where username=? and password=?";
+		PreparedStatement ps;
 		try {
 			ps = Connection.openConnection().prepareStatement(SQL_LOGIN);
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ResultSet set = ps.executeQuery();
-			if(set) {
+			System.out.println(set);
+			if(set.next()) {
 				userId = set.getInt(1);
 			}
 		} catch (Exception e) {

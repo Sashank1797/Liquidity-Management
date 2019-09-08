@@ -2,11 +2,14 @@ package com.logic;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import com.dao.UserPersonalDetailsDAO;
 import com.database.DatabaseConnection;
+import com.pojo.UserPersonalDetails;
 
 public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 
-	public boolean addUser(String name,String contact, String emailID) {
+	public boolean addUser(String name,String contact, String emailId) {
 		DatabaseConnection Connection = new DatabaseConnection();
 		boolean userAdded=false;
 		String ADD_USER="insert into users values(?,?,?)";
@@ -18,7 +21,7 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 		ps.setString(3, emailId);
 		int rows=ps.executeUpdate();
 		if(rows>0) {
-		isUpdated=true;
+		userAdded=true;
 		}
 		} catch (SQLException e) {
 		// TODO Auto-generated catch block
@@ -30,9 +33,10 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 		boolean userdeleted=false;
 		return userdeleted;
 	}
-//	public UserPersonalDetails displayUserDetails(int userID) {
-//		UserPersonalDetails userDetails;
-//		return userDetails;
-//	}
+
+	public UserPersonalDetails displayUser(int userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
