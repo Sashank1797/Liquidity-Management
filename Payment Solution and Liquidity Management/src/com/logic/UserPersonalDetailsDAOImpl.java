@@ -2,7 +2,10 @@ package com.logic;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import com.dao.UserPersonalDetailsDAO;
 import com.database.DatabaseConnection;
+import com.pojo.UserPersonalDetails;
 
 public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 
@@ -15,7 +18,7 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 		ps = Connection.openConnection().prepareStatement(ADD_USER);
 		ps.setString(1, name);
 		ps.setString(2, contact);
-		ps.setString(3, emailId);
+		ps.setString(3, emailID);
 		int rows=ps.executeUpdate();
 		if(rows>0) {
 		isUpdated=true;
@@ -34,5 +37,10 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 //		UserPersonalDetails userDetails;
 //		return userDetails;
 //	}
+	@Override
+	public UserPersonalDetails displayUser(int userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
