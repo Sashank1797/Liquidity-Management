@@ -1,12 +1,14 @@
 package com.logic;
 
+import org.json.simple.JSONObject;
+
 public class UserAccountDetailsDAOImpl {
-public boolean updateAccountBalance(String accountNo,double balance) {
-	boolean balanceUpdated=false;
-	return balanceUpdated;
-}
-public double poolingFunction() {
-	double netAmount=0.0d;
-	return netAmount;
-}
+	public JSONObject updateAccountBalance(String accountNo,double balance) {
+		JSONObject response = new JSONObject();
+		return response;
+	}
+	public JSONObject poolingFunction() {
+		JSONObject response = new JSONObject();
+		return response;
+	}
 }

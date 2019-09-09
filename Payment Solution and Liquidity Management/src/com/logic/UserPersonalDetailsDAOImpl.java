@@ -1,17 +1,16 @@
 package com.logic;
 
 import java.sql.PreparedStatement;
+import org.json.simple.JSONObject;
 import java.sql.SQLException;
-
 import com.dao.UserPersonalDetailsDAO;
 import com.database.DatabaseConnection;
-import com.pojo.UserPersonalDetails;
 
 public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 
-	public boolean addUser(String name,String contact, String emailId) {
+	public JSONObject addUser(String name,String contact, String emailId) {
+		JSONObject response = new JSONObject();
 		DatabaseConnection Connection = new DatabaseConnection();
-		boolean userAdded=false;
 		String ADD_USER="insert into users values(?,?,?)";
 		PreparedStatement ps;
 		try {
@@ -21,22 +20,31 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 		ps.setString(3, emailId);
 		int rows=ps.executeUpdate();
 		if(rows>0) {
-		userAdded=true;
+			response.put("error", false);
+			response.put("message", "success");
+			response.put("data", "");
+		}
+		else {
+			response.put("error", true);
+			response.put("message", "Signup failed");
+			response.put("data", "");
 		}
 		} catch (SQLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 		}
-		return userAdded;
+		return response;
 	}
-	public boolean deleteUser(int userID) {
-		boolean userdeleted=false;
-		return userdeleted;
+	
+	public JSONObject deleteUser(int userID) {
+		JSONObject response = new JSONObject();
+		return response;
 	}
 
-	public UserPersonalDetails displayUser(int userID) {
+	public JSONObject displayUser(int userID) {
 		// TODO Auto-generated method stub
-		return null;
+		JSONObject response = new JSONObject();
+		return response;
 	}
 	
 }

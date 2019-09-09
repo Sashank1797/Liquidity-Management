@@ -1,9 +1,11 @@
 package com.logic;
 
+import org.json.simple.JSONObject;
+
 public class NotionalPoolingDAOImpl {
 
-	public double poolingFunction() {
-		double netAmount=0.0d;
-		return netAmount;
+	public JSONObject poolingFunction() {
+		JSONObject response = new JSONObject();
+		return response;
 	}
 }

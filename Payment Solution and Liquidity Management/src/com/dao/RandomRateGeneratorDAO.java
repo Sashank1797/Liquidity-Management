@@ -1,6 +1,8 @@
 package com.dao;
 
+import org.json.simple.JSONObject;
+
 public interface RandomRateGeneratorDAO {
 
-	public void randomGenerateRates();
+	public JSONObject randomGenerateRates();
 }
