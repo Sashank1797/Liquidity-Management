@@ -1,13 +1,16 @@
-	package com.logic;
+package com.logic;
 	
-	import java.sql.PreparedStatement;
-	import java.sql.ResultSet;
-	import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 	
-	import com.dao.UserAccountDetailsDAO;
-	import com.database.DatabaseConnection;
-	public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
-	public boolean updateAccountBalance(String accountNo,double balance){
+import com.dao.UserAccountDetailsDAO;
+import com.database.DatabaseConnection;
+import org.json.simple.JSONObject;
+public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
+
+public JSONObject updateAccountBalance(String accountNo,double balance) {
+		JSONObject response = new JSONObject();
 		boolean balanceUpdated=false;
 		String FETCH_BALANCE="SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO=?";
 		String BALANCE_UPDATE ="update accounts set balance=? where account_no=?"; 
@@ -34,8 +37,10 @@
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return balanceUpdated;
+		return response;
 	}
-	
-	
+	public JSONObject poolingFunction() {
+		JSONObject response = new JSONObject();
+		return response;
 	}
+}
