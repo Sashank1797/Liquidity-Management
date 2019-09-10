@@ -4,27 +4,34 @@ import java.sql.Date;
 
 public class UserTransactionDetails {
 
-	long transactionID;
-	long userAccountNo;
-	long counterpartyAccountNo;
+	int transactionID;
+	String userAccountNo;
+	String counterpartyAccountNo;
 	Date date;
 	double amount;
+	String currency;
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 	public long getTransactionID() {
 		return transactionID;
 	}
-	public void setTransactionID(long transactionID) {
+	public void setTransactionID(int transactionID) {
 		this.transactionID = transactionID;
 	}
-	public long getUserAccountNo() {
+	public String getUserAccountNo() {
 		return userAccountNo;
 	}
-	public void setUserAccountNo(long userAccountNo) {
+	public void setUserAccountNo(String userAccountNo) {
 		this.userAccountNo = userAccountNo;
 	}
-	public long getCounterpartyAccountNo() {
+	public String getCounterpartyAccountNo() {
 		return counterpartyAccountNo;
 	}
-	public void setCounterpartyAccountNo(long counterpartyAccountNo) {
+	public void setCounterpartyAccountNo(String counterpartyAccountNo) {
 		this.counterpartyAccountNo = counterpartyAccountNo;
 	}
 	
@@ -40,14 +47,15 @@ public class UserTransactionDetails {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public UserTransactionDetails(long transactionID, long userAccountNo, long counterpartyAccountNo, Date date,
-			double amount) {
+	public UserTransactionDetails(int transactionID, String userAccountNo, String counterpartyAccountNo, Date date,
+			double amount,String currency) {
 		super();
 		this.transactionID = transactionID;
 		this.userAccountNo = userAccountNo;
 		this.counterpartyAccountNo = counterpartyAccountNo;
 		this.date = date;
 		this.amount = amount;
+		this.currency=currency;
 	}
 	public UserTransactionDetails() {
 		super();

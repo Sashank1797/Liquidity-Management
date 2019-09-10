@@ -77,6 +77,7 @@ public class UserAccountDetails {
 		this.balanceGBP = balanceGBP;
 		this.balanceEUR = balanceEUR;
 	}
+	
 	public UserAccountDetails() {
 		super();
 	}
