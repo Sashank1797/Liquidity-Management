@@ -35,10 +35,28 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 		}
 		return response;
 	}
-	
-	public JSONObject deleteUser(int userID) {
-		JSONObject response = new JSONObject();
+
+	public boolean deleteUser(int userID) {
+		boolean userdeleted=false;
+		DatabaseConnection Connection = new DatabaseConnection();
+		String DELETE_USER="DELETE FROM ";"insert into users values(?,?,?)";
+		PreparedStatement ps;
+		try {
+		ps = Connection.openConnection().prepareStatement(ADD_USER);
+		ps.setString(1, name);
+		ps.setString(2, contact);
+		ps.setString(3, emailId);
+		int rows=ps.executeUpdate();
+		if(rows>0) {
+		userAdded=true;
+		}
+		} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+  	JSONObject response = new JSONObject();
 		return response;
+// 		return userdeleted;
 	}
 
 	public JSONObject displayUser(int userID) {
