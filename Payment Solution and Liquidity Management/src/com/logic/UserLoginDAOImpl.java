@@ -50,6 +50,34 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 	}
 	public boolean updatePassword(String userName,String currentPassword,String newPassword) {
 		boolean update=false;
+		String AUTHENTICATE_USER="SELECT PASSWORD FROM LOGIN WHERE USERNAME=?";
+		String UPDATE_PASSWORD="UPDATE LOGIN SET PASSWORD=? WHERE USERNAME=?";
+		DatabaseConnection Connection=new DatabaseConnection();
+		PreparedStatement ps;
+		String password=null;
+		try {
+			ps=Connection.openConnection().prepareStatement(UPDATE_PASSWORD);
+			ps.setString(1, userName);
+			//ps.setString(2, currentPassword);
+			ResultSet set=ps.executeQuery();
+			if(set.next()) {
+					password=set.getString("password");
+			}
+			if(password.equals(currentPassword)) {
+				ps=Connection.openConnection().prepareStatement(UPDATE_PASSWORD);
+				ps.setString(1, newPassword);
+				ps.setString(2, userName);
+				update=true;
+			}
+			else {
+				System.out.println("error");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		return update;
 	}
 }
