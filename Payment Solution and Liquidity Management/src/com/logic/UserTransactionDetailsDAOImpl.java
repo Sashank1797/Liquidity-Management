@@ -1,8 +1,9 @@
+
 package com.logic;
 
 import com.dao.UserAccountDetailsDAO;
 import com.dao.UserTransactionDetailsDAO;
-
+import java.util.Random;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import com.database.DatabaseConnection;
@@ -17,39 +18,42 @@ import java.util.Random;
 
 import org.json.simple.JSONObject;
 import java.sql.Statement;
-
 import com.pojo.UserTransactionDetails;
 
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
-
-	public static int x=1211;
+	
 	public static int getRandomNumberInRange(int min, int max) {
-	Random r = new Random();
-	return r.nextInt((max - min) + 1) + min;
-	}
-
-	public static String transactionIdGenerator() {
-	String transactionId="TXA79"+x;
-	x+=1;
-	return transactionId;
-	}
-
-	public static String counterpartyAccountNumberGenerator() {
-	int n = getRandomNumberInRange(10000, 99999);
-	String account_number="70010"+n;
-	return account_number;
-	}
-
-	public static double getRandomDoubleBetweenRange(double min, double max){
-	   //double x = ((Math.random()*(max-min))+min);
-	  double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
-	   return x;
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
 	}
 	
+	public static String transactionIdGenerator() {
+		int x = getRandomNumberInRange(10000, 99999);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		while(list.contains(x)) {
+			x = getRandomNumberInRange(10000, 99999);
+		}
+		list.add(x);
+		String transactionId="TXA79"+x;
+		return transactionId;
+	}
+	
+	
+	public static String counterpartyAccountNumberGenerator() {
+		int n = getRandomNumberInRange(10000, 99999);
+		String account_number="70010"+n;
+		return account_number;
+	}
+	
+	public static double getRandomDoubleBetweenRange(double min, double max){
+	    //double x = ((Math.random()*(max-min))+min);
+	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
+	    return x;
+	}
 
-	public JSONObject addTransaction(String transactionID, String userAccountNo, String counterpartyAccountNo, Date date,
-			double amount, String currency) {
-		JSONObject response = new JSONObject();
+
+  public JSONObject addTransaction(String transactionID,String userAccountNo, String counterpartyAccountNo, Date date, double amount,String currency) {
+	JSONObject response = new JSONObject();
 	int rows_inserted=0;
 	DatabaseConnection Connection= new DatabaseConnection();
 	PreparedStatement ps;
@@ -62,6 +66,7 @@ public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
 			ps.setString(3, transactionIdGenerator());
 			ps.setString(4, userAccountNo);
 			ps.setString(5, counterpartyAccountNumberGenerator());
+
 			ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
 			ps.setString(7, currency);
 			ps.setDate(8, date);;
@@ -84,6 +89,7 @@ return response;
 }
   
 public JSONObject getTransactionbyAccount(String accountNo){
+
   JSONObject response = new JSONObject();
   String GET_TRANSACTION_ACCOUNT="SELECT * FROM TRANSACTIONS WHERE ACCOUNT_NO=?";
 	DatabaseConnection Connection= new DatabaseConnection();
@@ -126,25 +132,22 @@ public JSONObject getTransactionbyAccount(String accountNo){
 	public JSONObject deleteTransaction(String transaction_ID) {
 		// TODO Auto-generated method stub
 		JSONObject response=new JSONObject();
-		List<UserTransactionDetails> transactionList=new ArrayList<>();
-		String SELECTION="SELECT * FROM TRANSACTION WHERE TRANSACTIONID=?";
 		String DELETE_TRANSACTION="DELETE FROM TRANSACTION WHERE TRANSACTIONID=?";
 		DatabaseConnection Connection=new DatabaseConnection();
 	try {
-		PreparedStatement ps=Connection.openConnection().prepareStatement(SELECTION);
+		PreparedStatement ps=Connection.openConnection().prepareStatement(DELETE_TRANSACTION);
 		ps.setString(1, transaction_ID);
-		ResultSet set=ps.executeQuery();
-		while(set.next()) {
-		long transactionID=set.getLong("transactionID");
-		long userAccountNo=set.getLong("userAccountNo");
-		long counterpartyAccountNo=set.getLong("counterpartyAccountNo");
-		Date date=set.getDate("date");
-		double amount=set.getDouble("amount");
-		String currency=set.getString("currency");
-		UserTransactionDetails transaction=new UserTransactionDetails(transactionID, userAccountNo, counterpartyAccountNo, date, currency, amount);
-		transactionList.add(transaction);
-		Connection.openConnection().prepareStatement(DELETE_TRANSACTION);
-		}
+		boolean deleted = ps.executeUpdate();
+	  if(deleted){
+      response.put("error", false);
+	    response.put("message", "Sucess");
+	    response.put("data", "");
+    }
+    else {
+	    response.put("error", true);
+	    response.put("message", "No transactions deleted");
+	    response.put("data", "");
+    }
 	} 
 	catch (SQLException e) {
 	// TODO Auto-generated catch block
@@ -153,12 +156,6 @@ public JSONObject getTransactionbyAccount(String accountNo){
 	
 	return response;
 	}
+}
 
-	
-
-	
-	
-
-	
-	}
 	

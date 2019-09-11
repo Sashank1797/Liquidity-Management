@@ -1,9 +1,13 @@
 package com.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class UserTransactionDetails {
 
+public UserTransactionDetails() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 long transactionID;
 long userAccountNo;
 long counterpartyAccountNo;
