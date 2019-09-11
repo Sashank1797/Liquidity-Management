@@ -60,6 +60,7 @@ public class GetTransaction {
 		PreparedStatement ps=conn.prepareStatement(query);
 		//ps.setString(1, accountNo);
 		ResultSet rs=ps.executeQuery();
+		//
 		while(rs.next()) {
 			obj = new JSONObject();
 			obj.put("transaction_id", rs.getInt(1));
