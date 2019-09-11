@@ -1,5 +1,6 @@
 package com.pojo;
 
+
 public class UserTransactionDetails {
 
 	String transactionID;

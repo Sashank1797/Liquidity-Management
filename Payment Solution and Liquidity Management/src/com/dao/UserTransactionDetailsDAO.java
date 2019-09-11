@@ -8,5 +8,4 @@ public interface UserTransactionDetailsDAO {
 	public JSONObject addTransaction(String userAccountNo, String counterpartyAccountNo, String date,double amount,String currency);
 	public JSONObject getTransactionbyAccount(String AccountNo);
 	public JSONObject deleteTransaction(String transactionID);
-
 }

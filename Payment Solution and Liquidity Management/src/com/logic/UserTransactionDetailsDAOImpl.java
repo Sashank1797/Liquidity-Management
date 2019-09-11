@@ -1,8 +1,9 @@
+
 package com.logic;
 
 import com.dao.UserAccountDetailsDAO;
 import com.dao.UserTransactionDetailsDAO;
-
+import java.util.Random;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import com.database.DatabaseConnection;
@@ -28,29 +29,34 @@ import com.pojo.UserTransactionDetails;
 
 @Path("/transactionalinformation")
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
-
-	public static int x=1211;
+	
 	public static int getRandomNumberInRange(int min, int max) {
-	Random r = new Random();
-	return r.nextInt((max - min) + 1) + min;
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
 	}
-
+	
 	public static String transactionIdGenerator() {
-	String transactionId="TXA79"+x;
-	x+=1;
-	return transactionId;
+		int x = getRandomNumberInRange(10000, 99999);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		while(list.contains(x)) {
+			x = getRandomNumberInRange(10000, 99999);
+		}
+		list.add(x);
+		String transactionId="TXA79"+x;
+		return transactionId;
 	}
-
+	
+	
 	public static String counterpartyAccountNumberGenerator() {
-	int n = getRandomNumberInRange(10000, 99999);
-	String account_number="70010"+n;
-	return account_number;
+		int n = getRandomNumberInRange(10000, 99999);
+		String account_number="70010"+n;
+		return account_number;
 	}
-
+	
 	public static double getRandomDoubleBetweenRange(double min, double max){
-	   //double x = ((Math.random()*(max-min))+min);
-	  double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
-	   return x;
+	    //double x = ((Math.random()*(max-min))+min);
+	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
+	    return x;
 	}
 	
 	@POST
@@ -72,6 +78,7 @@ public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
 			ps.setString(3, transactionIdGenerator());
 			ps.setString(4, userAccountNo);
 			ps.setString(5, counterpartyAccountNumberGenerator());
+
 			ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
 			ps.setString(7, currency);
 			ps.setString(8, date);
@@ -183,24 +190,32 @@ return response;
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/removetransaction")
 	@Override
-	public JSONObject deleteTransaction(String transactionID) {
-	// TODO Auto-generated method stub
-	return null;
+	public JSONObject deleteTransaction(String transaction_ID) {
+		// TODO Auto-generated method stub
+		JSONObject response=new JSONObject();
+		String DELETE_TRANSACTION="DELETE FROM TRANSACTION WHERE TRANSACTIONID=?";
+		DatabaseConnection Connection=new DatabaseConnection();
+	try {
+		PreparedStatement ps=Connection.openConnection().prepareStatement(DELETE_TRANSACTION);
+		ps.setString(1, transaction_ID);
+		int deleted = ps.executeUpdate();
+	  if(deleted>0){
+      response.put("error", false);
+	    response.put("message", "Sucess");
+	    response.put("data", "");
+    }
+    else {
+	    response.put("error", true);
+	    response.put("message", "No transactions deleted");
+	    response.put("data", "");
+    }
+	} 
+	catch (SQLException e) {
+	// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
-
-
-  
-
-  
 	
-	
+	return response;
+	}
 }
-
-	
-
-	
-	
-
-	
-
 	
