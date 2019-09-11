@@ -53,8 +53,10 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 				response.put("error", true);
 				response.put("message", "Success");
 				JSONObject user=new JSONObject();
-				user.put();
-				user.put(key, value);
+				user.put("id",set.getInt(1));
+				user.put("name", set.getString(2));
+				user.put("contact_no", set.getString(3));
+				user.put("email_id", set.getString(4));
 				response.put("data", user);
 			}
 			else {

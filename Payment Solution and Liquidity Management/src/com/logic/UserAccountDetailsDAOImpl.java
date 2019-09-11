@@ -22,8 +22,8 @@ public JSONObject updateAccountBalance(String accountNo,double balance) {
 			ResultSet set=ps.executeQuery();
 			if(set.next()) {
 				response.put("error", false);
-        response.put("message", "success");
-        response.put("data", "");
+				response.put("message", "success");
+				response.put("data", "");
         return response;
 			}
 		} catch (SQLException e) {
@@ -35,4 +35,34 @@ public JSONObject updateAccountBalance(String accountNo,double balance) {
     response.put("data", "");
     return response;
 	}
+
+@Override
+public JSONObject getAccountBalanceandNumberbyID(int user_ID) {
+	// TODO Auto-generated method stub
+	JSONObject response=new JSONObject();
+	String GET_BY_ID="SELECT BALANCE, ACCOUNT_NO FROM FROM ACCOUNTS WHERE USER_ID=?";
+	DatabaseConnection Connection=new DatabaseConnection();
+	PreparedStatement ps;
+	try {
+		ps=Connection.openConnection().prepareStatement(GET_BY_ID);
+		ResultSet set=ps.executeQuery();
+		if(set.next()) {
+			response.put("error", false);
+			response.put("message", "success");
+			JSONObject accountBalance=new JSONObject();
+			accountBalance.put("balance",set.getDouble(5));
+			response.put("data", accountBalance);
+		}
+		else {
+			response.put("error", true);
+			response.put("message", "Failed to get data");
+			response.put("data", "  ");
+			
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return null;
+}
 }
