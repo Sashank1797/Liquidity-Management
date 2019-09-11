@@ -1,5 +1,5 @@
 package com.logic;
-
+import org.json.simple.JSONObject;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -10,10 +10,8 @@ import com.dao.RandomRateGeneratorDAO;
 import com.database.DatabaseConnection;
 
 public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
-
-	public boolean populateRatesInDB() {
-		
-		boolean ratespopulated=false;
+	public JSONObject randomGenerateRates() {
+		JSONObject response = new JSONObject();
 		// Generate rates
 		
 		    double eur_usd_bid=(getRandomDoubleBetweenRange(1.1, 1.2));
@@ -69,11 +67,12 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	       return ratespopulated; 
+	       return response; 
 	}
 	public  double getRandomDoubleBetweenRange(double min, double max){
 	    //double x = ((Math.random()*(max-min))+min);
 	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
 	    return x;
+
 	}
 }
