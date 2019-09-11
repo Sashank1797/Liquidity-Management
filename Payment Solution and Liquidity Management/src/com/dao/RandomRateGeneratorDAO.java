@@ -2,5 +2,6 @@ package com.dao;
 
 public interface RandomRateGeneratorDAO {
 
-	public void randomGenerateRates();
+	public boolean populateRatesInDB();
+	public  double getRandomDoubleBetweenRange(double min, double max);
 }

@@ -9,26 +9,58 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.sql.Statement;
 
 import com.pojo.UserTransactionDetails;
 
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
+	
+	public static int getRandomNumberInRange(int min, int max) {
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
+	
+	public static String transactionIdGenerator() {
+		int x = getRandomNumberInRange(10000, 99999);
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		while(list.contains(x)) {
+			x = getRandomNumberInRange(10000, 99999);
+		}
+		list.add(x);
+		String transactionId="TXA79"+x;
+		return transactionId;
+	}
+	
+	
+	public static String counterpartyAccountNumberGenerator() {
+		int n = getRandomNumberInRange(10000, 99999);
+		String account_number="70010"+n;
+		return account_number;
+	}
+	
+	public static double getRandomDoubleBetweenRange(double min, double max){
+	    //double x = ((Math.random()*(max-min))+min);
+	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
+	    return x;
+	}
 
-public boolean addTransaction(long transactionID,long userAccountNo, long counterpartyAccountNo, Date date, double amount,String currency) {
+
+public boolean addTransaction(String transactionID,String userAccountNo,String counterpartyAccountNo, Date date, double amount,String currency) {
 boolean transactionAdded=false;
 int rows_inserted=0;
 DatabaseConnection Connection= new DatabaseConnection();
 PreparedStatement ps;
+for(int i=0;i<30;i++) {
 String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
 try {
 ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
-ps.setInt(1, ID);
-ps.setInt(2, user_ID);
-ps.setLong(3, transactionID);
-ps.setLong(4, userAccountNo);
-ps.setLong(5, counterpartyAccountNo);
-ps.setDouble(6, amount);
+ps.setInt(1, 1);
+ps.setInt(2, 1);
+ps.setString(3, transactionIdGenerator());
+ps.setString(4, userAccountNo);
+ps.setString(5, counterpartyAccountNumberGenerator());
+ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
 ps.setString(7, currency);
 ps.setDate(8, date);
 rows_inserted=ps.executeUpdate();
@@ -39,6 +71,7 @@ transactionAdded=true;
 e.printStackTrace();
 }
 
+}
 return transactionAdded;
 }
 public List<UserTransactionDetails> getTransactionbyAccount(long accountNo){
