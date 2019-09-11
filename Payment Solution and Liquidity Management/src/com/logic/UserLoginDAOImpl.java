@@ -3,12 +3,24 @@ package com.logic;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.json.simple.JSONObject;
 import com.dao.UserLoginDAO;
 import com.database.DatabaseConnection;
 
+@Path("/login")
 public class UserLoginDAOImpl implements UserLoginDAO {
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/signup")
 	public JSONObject addUserCredentials(String username,String password) {
 		JSONObject response = new JSONObject();
 		DatabaseConnection Connection = new DatabaseConnection();
@@ -36,6 +48,10 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		}
 		return response;
 	}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/login")
 	public JSONObject authenticateUser(String username,String password) {
 		JSONObject response = new JSONObject();
 		DatabaseConnection Connection = new DatabaseConnection();
@@ -70,6 +86,10 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		}
 		return response;
 	}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/changepassword")
 	public JSONObject updatePassword(String userName,String currentPassword,String newPassword) {
 		JSONObject response = new JSONObject();
 		String UPDATE_PASSWORD="UPDATE LOGIN SET PASSWORD=? WHERE USERNAME=? AND PASSWORD=?";

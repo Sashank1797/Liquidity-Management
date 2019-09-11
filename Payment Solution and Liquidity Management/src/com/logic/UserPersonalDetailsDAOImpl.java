@@ -5,11 +5,23 @@ import java.sql.ResultSet;
 
 import org.json.simple.JSONObject;
 import java.sql.SQLException;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import com.dao.UserPersonalDetailsDAO;
 import com.database.DatabaseConnection;
 
+@Path("/userinformation")
 public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/signup")
 	public JSONObject addUser(String name,String contact, String emailId) {
 		JSONObject response = new JSONObject();
 		DatabaseConnection Connection = new DatabaseConnection();
@@ -39,6 +51,10 @@ public class UserPersonalDetailsDAOImpl implements UserPersonalDetailsDAO {
 	}
 
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/showdata")
 	public JSONObject displayUser(int userID) {
 		// TODO Auto-generated method stub
 		JSONObject response = new JSONObject();
