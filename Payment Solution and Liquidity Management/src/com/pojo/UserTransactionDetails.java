@@ -1,6 +1,5 @@
-package com.pojo;
 
-import java.util.Date;
+package com.pojo;
 
 public class UserTransactionDetails {
 

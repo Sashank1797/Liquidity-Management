@@ -1,6 +1,5 @@
 package com.logic;
 import java.time.LocalDate;
-
 import com.dao.RandomRateGeneratorDAO;
 
 public class appDate {
@@ -26,7 +25,7 @@ public class appDate {
 	public static void setDate(String date) {
 		appDate.date = date;
 	}
-	
+
 	public void endOfDay(String current_date) {
 		
 		//********Insert rates in table for current date*****
@@ -35,5 +34,7 @@ public class appDate {
 		randomRate.populateRatesInDB(current_date);
 		
 		// 
-	}
+  }
+
 }
+

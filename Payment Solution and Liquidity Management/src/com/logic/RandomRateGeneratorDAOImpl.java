@@ -86,7 +86,6 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	@Override
 	public List<Double> getRatesFromDB(String date) {
 		
-		System.out.println("Inside getRatesFromDB");
 		List<Double> rates=new ArrayList<>();
         String GET_RATES_BY_DATE="SELECT * FROM RATES WHERE PRESENT_DATE=? ";
 	
