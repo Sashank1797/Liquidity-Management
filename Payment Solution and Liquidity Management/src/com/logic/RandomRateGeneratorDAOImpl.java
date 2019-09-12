@@ -1,3 +1,4 @@
+
 package com.logic;
 
 import java.sql.PreparedStatement;
@@ -17,7 +18,7 @@ import org.json.simple.JSONObject;
 
 public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 
-	public JSONObject populateRatesInDB() {
+	public JSONObject populateRatesInDB(String date) {
 		JSONObject response = new JSONObject();
 		// Generate rates
 		
@@ -53,7 +54,7 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 				PreparedStatement ps=conObj.openConnection().prepareStatement(RATES_INSERT);
 				
 				ps.setInt(1, 1);
-				ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+				ps.setString(2,  date);
 				ps.setDouble(3, usd_lend);
 				ps.setDouble(4, usd_borrow);
 				ps.setDouble(5, gbp_lend);
@@ -136,3 +137,5 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	}
 
 }
+
+
