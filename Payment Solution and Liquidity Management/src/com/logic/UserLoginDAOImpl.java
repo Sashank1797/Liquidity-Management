@@ -70,35 +70,32 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		}
 		return response;
 	}
-	public boolean updatePassword(String userName,String currentPassword,String newPassword) {
-		boolean update=false;
-		String AUTHENTICATE_USER="SELECT PASSWORD FROM LOGIN WHERE USERNAME=?";
-		String UPDATE_PASSWORD="UPDATE LOGIN SET PASSWORD=? WHERE USERNAME=?";
+	public JSONObject updatePassword(String userName,String currentPassword,String newPassword) {
+		JSONObject response = new JSONObject();
+		String UPDATE_PASSWORD="UPDATE LOGIN SET PASSWORD=? WHERE USERNAME=? AND PASSWORD=?";
 		DatabaseConnection Connection=new DatabaseConnection();
 		PreparedStatement ps;
-		String password=null;
 		try {
 			ps=Connection.openConnection().prepareStatement(UPDATE_PASSWORD);
-			ps.setString(1, userName);
-			//ps.setString(2, currentPassword);
-			ResultSet set=ps.executeQuery();
-			if(set.next()) {
-					password=set.getString("password");
-			}
-			if(password.equals(currentPassword)) {
-				ps=Connection.openConnection().prepareStatement(UPDATE_PASSWORD);
-				ps.setString(1, newPassword);
-				ps.setString(2, userName);
-				update=true;
+			ps.setString(1, newPassword);
+			ps.setString(2, userName);
+			ps.setString(3, currentPassword);
+			int rows=ps.executeUpdate();
+			if(rows>0) {
+				response.put("error", false);
+				response.put("message", "success");
+				response.put("data", "");
 			}
 			else {
-				System.out.println("error");
+				System.out.println("Signup failed");
+				response.put("error", true);
+				response.put("message", "signup failed");
+				response.put("data", "");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-    JSONObject response = new JSONObject();
 		return response;
 // 		return update;
 	}
