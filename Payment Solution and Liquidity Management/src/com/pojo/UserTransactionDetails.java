@@ -4,40 +4,35 @@ import java.util.Date;
 
 public class UserTransactionDetails {
 
-public UserTransactionDetails() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-long transactionID;
-long userAccountNo;
-long counterpartyAccountNo;
-Date date;
+String transactionID;
+String userAccountNo;
+String counterpartyAccountNo;
+String date;
 String currency;
 double amount;
-public long getTransactionID() {
+public String getTransactionID() {
 return transactionID;
 }
-public void setTransactionID(long transactionID) {
+public void setTransactionID(String transactionID) {
 this.transactionID = transactionID;
 }
-public long getUserAccountNo() {
+public String getUserAccountNo() {
 return userAccountNo;
 }
-public void setUserAccountNo(long userAccountNo) {
+public void setUserAccountNo(String userAccountNo) {
 this.userAccountNo = userAccountNo;
 }
-public long getCounterpartyAccountNo() {
+public String getCounterpartyAccountNo() {
 return counterpartyAccountNo;
 }
-public void setCounterpartyAccountNo(long counterpartyAccountNo) {
+public void setCounterpartyAccountNo(String counterpartyAccountNo) {
 this.counterpartyAccountNo = counterpartyAccountNo;
 }
-public Date getDate() {
-return date;
+public UserTransactionDetails() {
+	//	super();
+		// TODO Auto-generated constructor stub
 }
-public void setDate(Date date) {
-this.date = date;
-}
+
 public String getCurrency() {
 return currency;
 }
@@ -50,9 +45,9 @@ return amount;
 public void setAmount(double amount) {
 this.amount = amount;
 }
-public UserTransactionDetails(long transactionID, long userAccountNo, long counterpartyAccountNo, Date date,
-String currency, double amount) {
-super();
+
+public UserTransactionDetails(String transactionID, String userAccountNo, String counterpartyAccountNo, Date date,String currency, double amount) {
+//super();
 this.transactionID = transactionID;
 this.userAccountNo = userAccountNo;
 this.counterpartyAccountNo = counterpartyAccountNo;

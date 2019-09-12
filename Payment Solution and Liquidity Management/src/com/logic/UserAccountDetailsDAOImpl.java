@@ -1,16 +1,20 @@
+
 package com.logic;
-	
+
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-	
+
 import com.dao.UserAccountDetailsDAO;
+import com.pojo.UserTransactionDetails;
+
 import com.database.DatabaseConnection;
 import org.json.simple.JSONObject;
 
 public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
-
-public JSONObject updateAccountBalance(String accountNo,double balance) {
+	
+	public JSONObject updateAccountBalance(String accountNo,double balance) {
 		JSONObject response = new JSONObject();
 		String BALANCE_UPDATE ="update accounts set balance=? where account_no={SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO=?}"; 
 		
@@ -65,4 +69,6 @@ public JSONObject getAccountBalanceandNumberbyID(int user_ID) {
 	}
 	return null;
 }
+
 }
+
