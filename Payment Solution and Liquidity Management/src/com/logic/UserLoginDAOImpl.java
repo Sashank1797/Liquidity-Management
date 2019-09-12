@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import com.dao.UserLoginDAO;
 import com.database.DatabaseConnection;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import com.logic.EncodePassword;
 
 @Path("/login")
 public class UserLoginDAOImpl implements UserLoginDAO {
@@ -70,28 +71,39 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		String username=(String)request.get("username");
 		String password=(String)request.get("password");
 		DatabaseConnection Connection = new DatabaseConnection();
-		String SQL_LOGIN = "select * from login where username=? and password=?";
+		String SQL_LOGIN = "select * from login where username=?";
 		PreparedStatement ps;
 		try {
 			ps = Connection.openConnection().prepareStatement(SQL_LOGIN);
 			ps.setString(1, username);
-			ps.setString(2, password);
+//			ps.setString(2, password);
 			System.out.println("Executing Query");
 			ResultSet set = ps.executeQuery();
 			if(set.next()) {
-				JSONObject login = new JSONObject();
-				login.put("userId", set.getInt(1));
-				login.put("username", set.getString(2));
-				response.put("error", false);
-				response.put("message", "success");
-				response.put("data", login);
+				String hashPassword = set.getString("password");
+				String salt = set.getString("salt");
+				String hashPass = EncodePassword.hashPassword(password, salt).get();
+//				System.out.println(hashPassword);
+//				System.out.println(hashPass);
+				if(hashPassword.equals(hashPass)) {
+					JSONObject login = new JSONObject();
+					login.put("userId", set.getInt(1));
+					login.put("username", set.getString(2));
+					response.put("error", false);
+					response.put("message", "success");
+					response.put("data", login);
+				}
+				System.out.println("Wrong password");
+				response.put("error", true);
+				response.put("message", "Incorrect password");
+				response.put("data", "");
 			}
 			else {
 				System.out.println("Authentication failed");
 				response.put("error", true);
-				response.put("message", "authentication failed");
+				response.put("message", "Incorrect username");
 				response.put("data", "");
-				System.out.println(response);
+//				System.out.println(response);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
