@@ -1,3 +1,4 @@
+
 package com.logic;
 
 import javax.ws.rs.Consumes;
@@ -24,8 +25,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-	
 import com.dao.UserAccountDetailsDAO;
+import com.pojo.UserTransactionDetails;
+
 import com.database.DatabaseConnection;
 import com.sun.org.apache.xpath.internal.operations.And;
 
@@ -137,8 +139,5 @@ public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
 	}
 	return response;
 }
-
-
-
-	
 }
+

@@ -30,10 +30,11 @@ import java.sql.Statement;
 
 import com.pojo.UserTransactionDetails;
 
-//@Path("/transactionalinformation")
+@Path("/transactionalinformation")
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
 	
-	public static int getRandomNumberInRange(int min, int max) {
+  
+  public static int getRandomNumberInRange(int min, int max) {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
 	}
@@ -60,7 +61,8 @@ public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
 	    //double x = ((Math.random()*(max-min))+min);
 	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
 	    return x;
-	}
+    
+  }
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
