@@ -7,10 +7,8 @@ import org.json.simple.parser.ParseException;
 
 public interface UserTransactionDetailsDAO {
 
-	public JSONObject randomGenerateTransaction(String data) throws ParseException;
-	public JSONObject addTransaction(String data) throws ParseException;
-	public JSONObject getTransactionbyCurrency(String data) throws ParseException;
-	public JSONObject deleteTransaction(String data) throws ParseException;
-}
-
-
+public JSONObject addTransaction(String transactionID,String userAccountNo, String counterpartyAccountNo, String date,double amount,String currency);
+public JSONObject getTransactionbyAccount(String AccountNo);
+public void randomGenerateCashflow();
+public JSONObject deleteTransaction(String transactionID);
+public JSONObject getCashFlows(String currency, String date);
