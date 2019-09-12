@@ -1,4 +1,3 @@
-
 package com.logic;
 
 import java.sql.PreparedStatement;
@@ -137,5 +136,3 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	}
 
 }
-
-
