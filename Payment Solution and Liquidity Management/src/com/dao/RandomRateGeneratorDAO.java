@@ -1,9 +1,10 @@
-package com.dao;
 
+package com.dao;
 import org.json.simple.JSONObject;
 
 public interface RandomRateGeneratorDAO {
 
 	public JSONObject populateRatesInDB();
-	public  JSONObject getRandomDoubleBetweenRange(double min, double max);
-}
+	public  double getRandomDoubleBetweenRange(double min, double max);
+	public List<Double> getRatesFromDB(String date);
+
