@@ -27,6 +27,7 @@ import java.util.List;
 	
 import com.dao.UserAccountDetailsDAO;
 import com.database.DatabaseConnection;
+import com.sun.org.apache.xpath.internal.operations.And;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,45 +39,79 @@ public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/update")
-	public JSONObject updateAccountBalance(String accountNo,double balance) {
+	public JSONObject updateAccountBalance(String data) throws ParseException{
+		//parameters - String currency,double balance
 		JSONObject response = new JSONObject();
-		String BALANCE_UPDATE ="update accounts set balance=? where account_no={SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO=?}"; 
-		
+		JSONParser parser=new JSONParser();
+		JSONObject request=(JSONObject) parser.parse(data);
+		String currency=(String)request.get("currency");
+		double balance=(double)request.get("balance");
+		String BALANCE_UPDATE ="update accounts set balance=? where currency=?"; 
+		String other_currency1=null;
+		String other_currency2=null;
+		switch(currency) {
+		case "GBP":
+			other_currency1="EUR";
+			other_currency2="USD";
+			break;
+		case "EUR":
+			other_currency1="GBP";
+			other_currency2="USD";
+			break;
+		case "USD":
+			other_currency1="EUR";
+			other_currency2="USD";
+			break;
+		}
 		PreparedStatement ps;
 		try {
 			DatabaseConnection Connection=new DatabaseConnection();
 			ps=Connection.openConnection().prepareStatement(BALANCE_UPDATE);
-			ps.setString(1, accountNo);
-			ResultSet set=ps.executeQuery();
-			if(set.next()) {
+			ps.setDouble(1, balance);
+			ps.setString(2, currency);
+			int row1=ps.executeUpdate();
+			ps.setDouble(1, 0);
+			ps.setString(2, other_currency1);
+			int row2=ps.executeUpdate();
+			ps.setDouble(1, 0);
+			ps.setString(2, other_currency2);
+			int row3=ps.executeUpdate();
+			if(row1>0 && row2>0 && row3>0) {
 				response.put("error", false);
 				response.put("message", "success");
 				response.put("data", "");
-        return response;
+			}
+			else {
+				response.put("error", true);
+			    response.put("message", "Balance not updated");
+			    response.put("data", "");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		response.put("error", true);
-    response.put("message", "Balance not updated");
-    response.put("data", "");
+		
     return response;
 	}
 
-	@Override
+	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/accountdata")
-	public JSONObject getAccountBalanceandNumberbyID(int user_ID) {
+	public JSONObject getAccountBalanceandNumberbyID(String data) throws ParseException{
 	// TODO Auto-generated method stub
-	JSONObject response=new JSONObject();
-	String GET_BY_ID="SELECT BALANCE, ACCOUNT_NO FROM FROM ACCOUNTS WHERE USER_ID=?";
+		//int user_ID
+		JSONObject response = new JSONObject();
+		JSONParser parser=new JSONParser();
+		JSONObject request=(JSONObject) parser.parse(data);
+		int user_ID=(Integer) request.get("user_id");
+	String GET_BY_ID="SELECT BALANCE, ACCOUNT_NO FROM ACCOUNTS WHERE USER_ID=?";
 	DatabaseConnection Connection=new DatabaseConnection();
 	PreparedStatement ps;
 	try {
 		ps=Connection.openConnection().prepareStatement(GET_BY_ID);
+		ps.setInt(1, user_ID);
 		ResultSet set=ps.executeQuery();
 		if(set.next()) {
 			response.put("error", false);
@@ -84,8 +119,8 @@ public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
 	    	JSONArray accountDetailsArray = new JSONArray();
 			do {
 			JSONObject accountDetails=new JSONObject();
-			accountDetails.put("account_no", set.getString(3));
-			accountDetails.put("balance",set.getDouble(5));
+			accountDetails.put("account_no", set.getString(2));
+			accountDetails.put("balance",set.getDouble(1));
 			accountDetailsArray.add(accountDetails);
 			}while(set.next());
 			response.put("data", accountDetailsArray);
@@ -100,6 +135,10 @@ public class UserAccountDetailsDAOImpl implements UserAccountDetailsDAO{
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	return null;
+	return response;
 }
+
+
+
+	
 }
