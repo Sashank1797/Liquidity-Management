@@ -1,16 +1,24 @@
+
 package com.logic;
-import org.json.simple.JSONObject;
+
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.dao.RandomRateGeneratorDAO;
 import com.database.DatabaseConnection;
+import com.pojo.UserTransactionDetails;
+
+import org.json.simple.JSONObject;
 
 public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
-	public JSONObject randomGenerateRates() {
+
+	public JSONObject populateRatesInDB(String date) {
 		JSONObject response = new JSONObject();
 		// Generate rates
 		
@@ -32,8 +40,8 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	        double eur_lend=Math.floor((eur_borrow-0.02)*100)/100;
 	        double gbp_borrow=getRandomDoubleBetweenRange(-1, 1);
 	        double gbp_lend=Math.floor((gbp_borrow-0.02)*100)/100;
-	             
 	        
+	       
 	        //*************  Inserting into DB***************
 	        
 	    	DatabaseConnection conObj=new DatabaseConnection();
@@ -46,7 +54,7 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 				PreparedStatement ps=conObj.openConnection().prepareStatement(RATES_INSERT);
 				
 				ps.setInt(1, 1);
-				ps.setDate(2, new java.sql.Date(System.currentTimeMillis()));
+				ps.setString(2,  date);
 				ps.setDouble(3, usd_lend);
 				ps.setDouble(4, usd_borrow);
 				ps.setDouble(5, gbp_lend);
@@ -73,6 +81,62 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	    //double x = ((Math.random()*(max-min))+min);
 	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
 	    return x;
-
 	}
+	
+	@Override
+	public List<Double> getRatesFromDB(String date) {
+		
+		System.out.println("Inside getRatesFromDB");
+		List<Double> rates=new ArrayList<>();
+        String GET_RATES_BY_DATE="SELECT * FROM RATES WHERE PRESENT_DATE=? ";
+	
+		DatabaseConnection connection= new DatabaseConnection();
+		PreparedStatement ps;
+		
+		try {
+			
+			// getting all FX- Rates and interest rates from RATES TABLE
+			
+			ps=connection.openConnection().prepareStatement(GET_RATES_BY_DATE);
+			ps.setString(1, date);
+			ResultSet set=ps.executeQuery();
+			
+			while(set.next())
+			{
+				Double usd_lend=set.getDouble("USD_BID");
+				Double usd_borrow=set.getDouble("USD_ASK");
+				Double gbp_lend=set.getDouble("GBP_BID");
+				Double gbp_borrow=set.getDouble("GBP_ASK");
+				Double eur_lend=set.getDouble("EUR_BID");
+				Double eur_borrow=set.getDouble("EUR_ASK");
+				Double gbp_usd_bid=set.getDouble("gbp_usd_bid");
+				Double gbp_usd_ask=set.getDouble("gbp_usd_ask");
+				Double eur_usd_bid=set.getDouble("EUR_USD_BID");
+				Double eur_usd_ask=set.getDouble("EUR_USD_ASK");
+				Double eur_gbp_bid=set.getDouble("EUR_GBP_BID");
+				Double eur_gbp_ask=set.getDouble("EUR_GBP_ASK");
+				//System.out.println(usd_lend);
+				rates.add(usd_lend);
+				rates.add(usd_borrow);
+				rates.add(gbp_lend);
+				rates.add(gbp_borrow);
+				rates.add(eur_lend);
+				rates.add(eur_borrow);
+				rates.add(gbp_usd_bid);
+				rates.add(gbp_usd_ask);
+				rates.add(eur_usd_bid);
+				rates.add(eur_usd_ask);
+				rates.add(eur_gbp_bid);
+				rates.add(eur_gbp_ask);
+		    }
+			
+		} catch (SQLException e) {
+		
+		    e.printStackTrace();
+		}
+		return rates;
+	}
+
 }
+
+

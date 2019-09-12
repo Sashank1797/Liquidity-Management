@@ -1,6 +1,6 @@
 
 package com.logic;
-
+import com.logic.appDate;
 import com.dao.UserAccountDetailsDAO;
 import com.dao.UserTransactionDetailsDAO;
 import java.util.Random;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.simple.JSONObject;
 import java.sql.Statement;
+import java.time.LocalDate;
+
 import com.pojo.UserTransactionDetails;
 
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
@@ -48,52 +50,91 @@ public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
 	   double x = (Math.floor(((Math.random()*(max-min))+min)*100))/100;
 	    return x;
 	}
+	
 
-
-  public JSONObject addTransaction(long transactionID,String userAccountNo, String counterpartyAccountNo, Date date, double amount,String currency) {
-	JSONObject response = new JSONObject();
-	int rows_inserted=0;
-	DatabaseConnection Connection= new DatabaseConnection();
-	PreparedStatement ps;
-	String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
-	try {
-			ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
-			ps.setInt(1, 1);
-			ps.setInt(2, 1);
-			ps.setLong(3, transactionIdGenerator());
-			ps.setString(4, userAccountNo);
-			ps.setString(5, counterpartyAccountNumberGenerator());		
-			ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
-			ps.setString(7, currency);
-			ps.setDate(8, date);
-			rows_inserted=ps.executeUpdate();
-      if(rows_inserted>0) {
-      	response.put("error", false);
-      	response.put("message", "success");
-	      response.put("data", "");
-      }
-      else {
-      	response.put("error", true);
-      	response.put("message", "Transaction not added");
-      	response.put("data", "");
-      }
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+//  public JSONObject addTransactionInitial(String userAccountNo, String currency) {
+//	JSONObject response = new JSONObject();
+//	int rows_inserted=0;
+//	//appDate retrieveDate=new appDate();
+//	DatabaseConnection Connection= new DatabaseConnection();
+//	PreparedStatement ps;
+//	for(int i=0;i<30;i++) {
+//	String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
+//	try {
+//			ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
+//			ps.setInt(1, 1);
+//			ps.setInt(2, 1);
+//			ps.setString(3, transactionIdGenerator());
+//			ps.setString(4, userAccountNo);
+//			ps.setString(5, counterpartyAccountNumberGenerator());		
+//			ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
+//			ps.setString(7, currency);
+//			ps.setString(8, appDate.getDate());
+//			rows_inserted=ps.executeUpdate();
+//      if(rows_inserted>0) {
+//      	response.put("error", false);
+//      	response.put("message", "success");
+//	      response.put("data", "");
+//      }
+//      else {
+//      	response.put("error", true);
+//      	response.put("message", "Transaction not added");
+//      	response.put("data", "");
+//      }
+//	} catch (SQLException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	}
+//return response;
+//}
+  
+	public JSONObject addTransaction(String userAccountNo, String counterpartyAccountNo, String name, double amount,String currency) {
+		JSONObject response = new JSONObject();
+		int rows_inserted=0;
+		//appDate retrieveDate=new appDate();
+		DatabaseConnection Connection= new DatabaseConnection();
+		PreparedStatement ps;
+		for(int i=0;i<10;i++) {
+		String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
+		try {
+				ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
+				ps.setInt(1, 1);
+				ps.setInt(2, 1);
+				ps.setString(3, transactionIdGenerator());
+				ps.setString(4, userAccountNo);
+				ps.setString(5, counterpartyAccountNo);		
+				ps.setDouble(6, amount);
+				ps.setString(7, currency);
+				ps.setString(8, appDate.getDate());
+				rows_inserted=ps.executeUpdate();
+	      if(rows_inserted>0) {
+	      	response.put("error", false);
+	      	response.put("message", "success");
+		      response.put("data", "");
+	      }
+	      else {
+	      	response.put("error", true);
+	      	response.put("message", "Transaction not added");
+	      	response.put("data", "");
+	      }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	return response;
 	}
-return response;
-}
-  
   
 
-public JSONObject getTransactionbyAccount(long accountNo){
+public JSONObject getTransactionbyAccount(String accountNo){
   JSONObject response = new JSONObject();
   String GET_TRANSACTION_ACCOUNT="SELECT * FROM TRANSACTIONS WHERE ACCOUNT_NO=?";
 	DatabaseConnection Connection= new DatabaseConnection();
 	PreparedStatement ps;
 	try {
 		ps=Connection.openConnection().prepareStatement(GET_TRANSACTION_ACCOUNT);
-		ps.setLong(1, accountNo);
+		ps.setString(1, accountNo);
 		ResultSet set=ps.executeQuery(GET_TRANSACTION_ACCOUNT);
     if(set.next()) {
 	    response.put("error", false);
@@ -124,31 +165,71 @@ public JSONObject getTransactionbyAccount(long accountNo){
 }
   
   @Override
-  JSONObject randomGenerateCashflow() {
-  // TODO Auto-generated method stub
+  public JSONObject randomGenerateCashflow(String currency) {
+	  
+	String userAccountNo=null;
+	
+	if(currency=="GBP")
+		userAccountNo="7010023465";
+	else if(currency=="EUR")
+		userAccountNo="7010048398";
+	else
+		userAccountNo="7010067259";
+	
 	JSONObject response = new JSONObject();
+	int rows_inserted=0;
+	DatabaseConnection Connection= new DatabaseConnection();
+	PreparedStatement ps;
+	for(int i=0;i<10;i++) {
+	String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
+	try {
+			ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
+			ps.setInt(1, 1);
+			ps.setInt(2, 1);
+			ps.setString(3, transactionIdGenerator());
+			ps.setString(4, userAccountNo);
+			ps.setString(5, counterpartyAccountNumberGenerator());		
+			ps.setDouble(6, getRandomDoubleBetweenRange(-1000000,1000000));
+			ps.setString(7, currency);
+			ps.setString(8, appDate.getDate());
+			rows_inserted=ps.executeUpdate();
+      if(rows_inserted>0) {
+      	response.put("error", false);
+      	response.put("message", "success");
+	      response.put("data", "");
+      }
+      else {
+      	response.put("error", true);
+      	response.put("message", "Transaction not added");
+      	response.put("data", "");
+      }
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	}
 	return response;
   }
   
 	@Override
-	public List<UserTransactionDetails> deleteTransaction(long transaction_ID) {
-		// TODO Auto-generated method stub
+	public JSONObject deleteTransaction(String transaction_ID) {
+		JSONObject response = new JSONObject();
 		List<UserTransactionDetails> transactionList=new ArrayList<>();
 		String SELECTION="SELECT * FROM TRANSACTION WHERE TRANSACTIONID=?";
 		String DELETE_TRANSACTION="DELETE FROM TRANSACTION WHERE TRANSACTIONID=?";
 		DatabaseConnection Connection=new DatabaseConnection();
 		try {
 	PreparedStatement ps=Connection.openConnection().prepareStatement(SELECTION);
-	ps.setLong(1, transaction_ID);
+	ps.setString(1, transaction_ID);
 	ResultSet set=ps.executeQuery();
 	while(set.next()) {
-	long transactionID=set.getLong("transactionID");
-	long userAccountNo=set.getLong("userAccountNo");
-	long counterpartyAccountNo=set.getLong("counterpartyAccountNo");
-	Date date=set.getDate("date");
+	String transactionID=set.getString("transactionID");
+	String userAccountNo=set.getString("userAccountNo");
+	String counterpartyAccountNo=set.getString("counterpartyAccountNo");
+	String date=set.getString("date");
 	double amount=set.getDouble("amount");
 	String currency=set.getString("currency");
-	UserTransactionDetails transaction=new UserTransactionDetails(transactionID, userAccountNo, counterpartyAccountNo, date, currency, amount);
+	UserTransactionDetails transaction=new UserTransactionDetails(transactionID, 
+			userAccountNo, counterpartyAccountNo, date, currency, amount);
 	transactionList.add(transaction);
 	Connection.openConnection().prepareStatement(DELETE_TRANSACTION);
 	}
@@ -157,14 +238,15 @@ public JSONObject getTransactionbyAccount(long accountNo){
 	e.printStackTrace();
 	}
 	
-	return transactionList;
+		return response;
 	}
-	@Override
-	public boolean addTransaction(long transactionID, long userAccountNo, long counterpartyAccountNo, Date date,
-			double amount, String currency) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+//	@Override
+//	public boolean addTransaction(String transactionID, String userAccountNo, 
+//			String counterpartyAccountNo, String date,
+//			double amount, String currency) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
 	}
 
 
