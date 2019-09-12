@@ -46,7 +46,7 @@ public void setAmount(double amount) {
 this.amount = amount;
 }
 
-public UserTransactionDetails(String transactionID, String userAccountNo, String counterpartyAccountNo, Date date,String currency, double amount) {
+public UserTransactionDetails(String transactionID, String userAccountNo, String counterpartyAccountNo, String date,String currency, double amount) {
 //super();
 this.transactionID = transactionID;
 this.userAccountNo = userAccountNo;

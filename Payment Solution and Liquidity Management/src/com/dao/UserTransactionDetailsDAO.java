@@ -10,12 +10,10 @@ import com.pojo.UserTransactionDetails;
 
 public interface UserTransactionDetailsDAO {
 
-public JSONObjec addTransaction(String transactionID,String userAccountNo, String counterpartyAccountNo, String date,double amount,String currency);
-public JSONObjec getTransactionbyAccount(String AccountNo);
+public JSONObject addTransaction(String transactionID,String userAccountNo, String counterpartyAccountNo, String date,double amount,String currency);
+public JSONObject getTransactionbyAccount(String AccountNo);
 public void randomGenerateCashflow();
-public JSONObjec deleteTransaction(String transactionID);
-
+public JSONObject deleteTransaction(String transactionID);
 }
 
-}
 

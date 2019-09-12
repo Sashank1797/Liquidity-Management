@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.sql.Statement;
 
 import com.pojo.UserTransactionDetails;
@@ -53,7 +58,7 @@ public JSONObject addTransaction(String transactionID,String userAccountNo,Strin
 		String ADD_TRANSACTION="INSERT INTO TRANSACTIONS VALUES(?,?,?,?,?,?,?,?)";
 		
 		try {
-			ps=Connection.openConnection().prepareStatement(ADD_TRANSACTION);
+			ps=connection.openConnection().prepareStatement(ADD_TRANSACTION);
 			ps.setInt(1, 1);
 			ps.setInt(2, 1);
 			ps.setString(3, transactionIdGenerator());
@@ -133,8 +138,8 @@ public JSONObject deleteTransaction(String transaction_ID) {
 	try {
 		PreparedStatement ps=connection.openConnection().prepareStatement(DELETE_TRANSACTION);
 		ps.setString(1, transaction_ID);
-		boolean deleted = ps.executeUpdate();
-	  if(deleted){
+		int deleted = ps.executeUpdate();
+	  if(deleted>0){
       response.put("error", false);
 	    response.put("message", "Sucess");
 	    response.put("data", "");

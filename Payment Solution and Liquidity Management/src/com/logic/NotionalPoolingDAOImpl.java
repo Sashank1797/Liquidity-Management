@@ -24,17 +24,20 @@ public class NotionalPoolingDAOImpl implements NotionalPoolingDAO {
 		double netAmount=0.0d;
 		double EUR_balance=0.0d,USD_balance=0.0d,GBP_balance=0.0d;
 		
-		double EUR_borrow_interestRate=0.3d,USD_borrow_interestRate=0.9d,GBP_borrow_interestRate=1.15d;
-		double EUR_lend_interestRate=0.20d,USD_lend_interestRate=0.75d,GBP_lend_interestRate=0.85d;
+		double EUR_borrow_interestRate=0.0d,USD_borrow_interestRate=0.0d,GBP_borrow_interestRate=0.0d;
+		double EUR_lend_interestRate=0.0d,USD_lend_interestRate=0.0d,GBP_lend_interestRate=0.0d;
 		
-		double EUR_USD_bid_rate=1.12d,EUR_USD_ask_rate=1.15d;
+		double EUR_USD_bid_rate=0.0d,EUR_USD_ask_rate=0.0d;
 		double EUR_GBP_bid_rate=0.0d,EUR_GBP_ask_rate=0.0d;	
-		double GBP_USD_bid_rate=1.23d;
-		double GBP_USD_ask_rate=1.39d;
+		double GBP_USD_bid_rate=0.0d;
+		double GBP_USD_ask_rate=0.0d;
 		
-		//*****************Getting new date******************
+		//*****************Getting present date******************
 		
-		
+	    String date=appDate.getDate();
+	    System.out.println("date="+date);
+//		appDate dateObj=new appDate();
+//		dateObj.setIncrementDate(date);
 		
 		//******************get net balance in all three currency****************
 		JSONObject net_balance = new JSONObject();
@@ -318,12 +321,12 @@ public class NotionalPoolingDAOImpl implements NotionalPoolingDAO {
 	}
 
 	@Override
-	public List<Double> calculateTotalBalance_from_TRANSACTIONS_table(String currency1,String currency2,String currency3) {
+	public List<Double> calculateTotalBalance_from_TRANSACTIONS_table(String accountNo_usd,String accountNo_eur,String accountNo_gbp,String date) {
 		
 		List<Double> balance=new ArrayList<>();
 		double balance_EUR=0.0d, balance_USD=0.0d, balance_GBP=0.0d;
 		
-		String GET_BALANCE_by_CURRENCY="SELECT SUM(AMOUNT) FROM TRANSACTIONS WHERE CURRENCY=? ";
+		String GET_BALANCE_by_CURRENCY="SELECT SUM(AMOUNT) FROM TRANSACTIONS WHERE ACCOUNT_NO=? AND DATE=? ";
 	
 		
 		DatabaseConnection connection= new DatabaseConnection();
@@ -334,7 +337,8 @@ public class NotionalPoolingDAOImpl implements NotionalPoolingDAO {
 			// getting total EUR_balance from TRANSACTIONS TABLE
 			
 			ps=connection.openConnection().prepareStatement(GET_BALANCE_by_CURRENCY);
-			ps.setString(1, currency1);
+			ps.setString(1, accountNo_eur);
+			ps.setString(2, date);
 			ResultSet set=ps.executeQuery();
 			
 			while(set.next())
@@ -345,7 +349,8 @@ public class NotionalPoolingDAOImpl implements NotionalPoolingDAO {
 		
 			// getting total USD_balance from TRANSACTIONS TABLE
 			
-			ps.setString(1, currency2);
+			ps.setString(1, accountNo_usd);
+			ps.setString(2, date);
 			set=ps.executeQuery();
 			
 			while(set.next())
@@ -356,7 +361,8 @@ public class NotionalPoolingDAOImpl implements NotionalPoolingDAO {
 			
 			// getting total GBP_balance from TRANSACTIONS TABLE
 			
-			ps.setString(1, currency3);
+			ps.setString(1, accountNo_gbp);
+			ps.setString(2, date);
 		    set=ps.executeQuery();
 			
 			while(set.next())
@@ -449,7 +455,9 @@ public List<Double> getBalance_from_ACCOUNTS_table(String currency1,String curre
 		List<Double> transactionBalance=new ArrayList<>();
 		List<Double> accountBalance=new ArrayList<>();
 		
-		transactionBalance=calculateTotalBalance_from_TRANSACTIONS_table("EUR", "USD", "GBP");
+		//******************Call date function************
+		String date="10-09-19";
+		transactionBalance=calculateTotalBalance_from_TRANSACTIONS_table("7010067259", "7010048398", "7010023465",date);
 		accountBalance=getBalance_from_ACCOUNTS_table("EUR", "USD", "GBP");
 		
 		for(int i=0;i<transactionBalance.size();i++)
