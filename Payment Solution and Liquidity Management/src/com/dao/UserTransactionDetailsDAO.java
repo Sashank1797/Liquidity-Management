@@ -14,6 +14,7 @@ public JSONObject addTransaction(String transactionID,String userAccountNo, Stri
 public JSONObject getTransactionbyAccount(String AccountNo);
 public void randomGenerateCashflow();
 public JSONObject deleteTransaction(String transactionID);
+public JSONObject getCashFlows(String currency, String date);
 }
 
 

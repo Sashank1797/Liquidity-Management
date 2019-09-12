@@ -20,7 +20,8 @@ import java.sql.Statement;
 import com.pojo.UserTransactionDetails;
 
 public class UserTransactionDetailsDAOImpl implements UserTransactionDetailsDAO{
-public static int getRandomNumberInRange(int min, int max) {
+
+	public static int getRandomNumberInRange(int min, int max) {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
 	}
@@ -156,4 +157,53 @@ public JSONObject deleteTransaction(String transaction_ID) {
 	}
 	return response;
 	}
+
+@Override
+public JSONObject getCashFlows(String currency, String date) {
+	// TODO Auto-generated method stub
+	JSONObject response = new JSONObject();
+	String GET_INFLOW="SELECT SUM(AMOUNT) FROM TRANSACTIONS WHERE CURRENCY=? AND DATE=? AND AMOUNT>0";
+	String GET_OUTFLOW="SELECT SUM(AMOUNT) FROM TRANSACTIONS WHERE CURRENCY=? AND DATE=? AND AMOUNT<0";
+	double inflow=0.0d, outflow=0.0d;
+	
+	DatabaseConnection connection= new DatabaseConnection();
+	PreparedStatement ps;
+	
+	try {
+		ps=connection.openConnection().prepareStatement(GET_INFLOW);
+		ps.setString(1, currency);
+		ps.setString(2, date);
+		ResultSet set=ps.executeQuery();
+		
+		if(set.next())
+		{
+			inflow=set.getDouble("SUM(AMOUNT)");
+			//System.out.println(balance_GBP);
+	    }
+		else {
+			
+		}
+				
+	} catch (SQLException e) {	
+	    e.printStackTrace();
+	}
+	try {
+		ps=connection.openConnection().prepareStatement(GET_OUTFLOW);
+		ps.setString(1, currency);
+		ps.setString(2, date);
+		ResultSet set=ps.executeQuery();
+		
+		if(set.next())
+		{
+			outflow=set.getDouble("SUM(AMOUNT)");
+			//System.out.println(balance_GBP);
+	    }
+		else {
+		}			
+	} catch (SQLException e) {	
+	    e.printStackTrace();
+	}
+	
+	return response;
+}
 }
