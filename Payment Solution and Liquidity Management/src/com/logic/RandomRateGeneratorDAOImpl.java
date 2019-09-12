@@ -1,3 +1,4 @@
+
 package com.logic;
 
 import java.sql.PreparedStatement;
@@ -13,11 +14,12 @@ import com.dao.RandomRateGeneratorDAO;
 import com.database.DatabaseConnection;
 import com.pojo.UserTransactionDetails;
 
+import org.json.simple.JSONObject;
+
 public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 
-	public boolean populateRatesInDB() {
-		
-		boolean ratespopulated=false;
+	public JSONObject populateRatesInDB() {
+		JSONObject response = new JSONObject();
 		// Generate rates
 		
 		    double eur_usd_bid=(getRandomDoubleBetweenRange(1.1, 1.2));
@@ -39,17 +41,7 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	        double gbp_borrow=getRandomDoubleBetweenRange(-1, 1);
 	        double gbp_lend=Math.floor((gbp_borrow-0.02)*100)/100;
 	        
-	        // Getting current date
-	        
-	       // DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    	//Date date = new Date();
-	    	//String date_test=dateFormat.format(date);
-	    	//System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
-	    	// java.sql.Date date1 = new java.sql.Date(0000-00-00);
-	    	// date1.currentTimeMillis();
-	    	//System.out.println( new java.sql.Date(System.currentTimeMillis()));
-	        
-	        
+	       
 	        //*************  Inserting into DB***************
 	        
 	    	DatabaseConnection conObj=new DatabaseConnection();
@@ -83,7 +75,7 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	       return ratespopulated; 
+	       return response; 
 	}
 	public  double getRandomDoubleBetweenRange(double min, double max){
 	    //double x = ((Math.random()*(max-min))+min);
@@ -145,3 +137,5 @@ public class RandomRateGeneratorDAOImpl implements RandomRateGeneratorDAO {
 	}
 
 }
+
+

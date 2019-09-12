@@ -1,10 +1,9 @@
 package com.dao;
 
-import com.pojo.UserPersonalDetails;
+import org.json.simple.JSONObject;
 
 public interface UserPersonalDetailsDAO {
 
-	public boolean addUser(String name, String contact, String emailID);
-	public boolean deleteUser(int userID);
-	public UserPersonalDetails displayUser(int userID);
+	public JSONObject addUser(String name, String contact, String emailID);
+	public JSONObject displayUser(int userID);
 }

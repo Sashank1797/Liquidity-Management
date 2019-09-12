@@ -1,11 +1,10 @@
-package com.dao;
 
-import java.util.List;
+package com.dao;
+import org.json.simple.JSONObject;
 
 public interface RandomRateGeneratorDAO {
 
-	public boolean populateRatesInDB();
+	public JSONObject populateRatesInDB();
 	public  double getRandomDoubleBetweenRange(double min, double max);
 	public List<Double> getRatesFromDB(String date);
-	
-}
+

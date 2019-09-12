@@ -9,6 +9,7 @@ public class DatabaseConnection {
 	public Connection openConnection() {
 		Connection connection=null;
 		try {
+			System.out.println("Loading connection");
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			System.out.println("Driver loaded successfully");
 			 connection= DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "group7", "password");

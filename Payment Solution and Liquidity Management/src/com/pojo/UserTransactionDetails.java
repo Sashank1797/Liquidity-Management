@@ -1,13 +1,13 @@
 package com.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class UserTransactionDetails {
 
 String transactionID;
 String userAccountNo;
 String counterpartyAccountNo;
-Date date;
+String date;
 String currency;
 double amount;
 public String getTransactionID() {
@@ -28,12 +28,11 @@ return counterpartyAccountNo;
 public void setCounterpartyAccountNo(String counterpartyAccountNo) {
 this.counterpartyAccountNo = counterpartyAccountNo;
 }
-public Date getDate() {
-return date;
+public UserTransactionDetails() {
+	//	super();
+		// TODO Auto-generated constructor stub
 }
-public void setDate(Date date) {
-this.date = date;
-}
+
 public String getCurrency() {
 return currency;
 }
@@ -46,9 +45,9 @@ return amount;
 public void setAmount(double amount) {
 this.amount = amount;
 }
-public UserTransactionDetails(String transactionID, String userAccountNo, String counterpartyAccountNo, Date date,
-String currency, double amount) {
-super();
+
+public UserTransactionDetails(String transactionID, String userAccountNo, String counterpartyAccountNo, Date date,String currency, double amount) {
+//super();
 this.transactionID = transactionID;
 this.userAccountNo = userAccountNo;
 this.counterpartyAccountNo = counterpartyAccountNo;
